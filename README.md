@@ -10,3 +10,9 @@ git clone https://github.com/themactep/openipc-docker.git
 cd openipc-dev
 ./run.sh
 ```
+
+When inside the container, follow the [instruction on building the firmware][2].
+
+
+[1]: https://github.com/OpenIPC/firmware
+[2]: https://github.com/OpenIPC/wiki/blob/master/en/building.md#build-the-firmware
