@@ -6,7 +6,7 @@ FROM ubuntu:latest
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get update && \
  DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y --no-install-recommends \
  apt-utils apt-transport-https bc build-essential ca-certificates cpio curl file \
- git locales mc rsync ssh sudo unzip vim wget whiptail
+ gcc-mipsel-linux-gnu git locales lzop mc rsync ssh sudo u-boot-tools unzip vim wget whiptail
 
 RUN update-ca-certificates
 
