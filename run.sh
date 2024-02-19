@@ -1,9 +1,11 @@
 #!/bin/bash
 #
-# Dockerized OpenIPC building environment
+# Dockerized building environment for use with thingino and openipc
 #
 # 2022, Paul Philippov <paul@themactep.com>
 #
+# Changes:
+#  2024-02-18: add support for thingino
 
 install_docker() {
 	echo "Installing Docker from its offical repository."
@@ -65,13 +67,33 @@ done
 
 
 # Build a Docker image with OpenIPC development enviroment
-docker build -t openipc-dev .
+docker build -t themactep-dev .
 
-# Clone OpenIPC firmware source files from repository
-[ ! -d firmware ] && git clone https://github.com/OpenIPC/firmware.git
+mkdir workspace
+
+# Clone firmware source files from repository
+case "$1" in
+	thingino)
+		if [ ! -d workspace/thingino ]; then
+            git clone https://github.com/themactep/thingino-firmware.git \
+                workspace/thingino
+        fi
+		;;
+	openipc)
+		if [ ! -d workspace/openipc ]; then
+            git clone https://github.com/OpenIPC/firmware.git \
+                workspace/openipc
+        fi
+		;;
+	*)
+		echo "Please select a firmware to work with."
+		echo "$0 [thingino|openipc]"
+		exit 1
+esac
 
 # Run a container in interactive mode and mount the source files in it
-docker run --rm -it --mount type=bind,source="$(pwd)/firmware",target=/home/openipc/firmware \
-    openipc-dev:latest
+docker run --rm -it \
+    --mount type=bind,source="$(pwd)/workspace",target=/home/me \
+    themactep-dev:latest
 
 exit 0
