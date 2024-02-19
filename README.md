@@ -1,8 +1,8 @@
-Dockerized Development Environnment for Thingino and OpenIPC
-------------------------------------------------------------
+Dockerized Development Environment for Thingino and OpenIPC
+-----------------------------------------------------------
 
-Development environment for building [Thingino][1] and [OpenIPC][2] firmware
-in a standardized and reproducible environment across various machines.
+Docker image for developing [Thingino][1] and [OpenIPC][2] firmware
+in a standardized and reproducible environment across different machines.
 
 ```
 git clone https://github.com/themactep/docker-worker.git ~/docker-worker
