@@ -1,18 +1,14 @@
-OpenIPC Docker Image
-====================
+Dockerized Development Environnment for Thingino and OpenIPC
+------------------------------------------------------------
 
-Docker image for building [OpenIPC Firmware][1] in a standardized
-and reproducible environment across various machines.
+Docker image for building [Thingino][1] and [OpenIPC][2] firmware images
+in a standardized and reproducible environment across various machines.
 
 ```
-mkdir ~/openipc-dev
-git clone https://github.com/themactep/openipc-docker.git ~/openipc-dev
-cd ~/openipc-dev
+git clone https://github.com/themactep/docker-worker.git ~/docker-worker
+cd ~/docker-worker
 ./run.sh
 ```
 
-When inside the container, follow the [instruction on building the firmware][2].
-
-
-[1]: https://github.com/OpenIPC/firmware
-[2]: https://github.com/OpenIPC/wiki/blob/master/en/building.md#build-the-firmware
+[1]: https://github.com/themactep/thingino-firmware
+[2]: https://github.com/openipc/firmware
