@@ -69,7 +69,7 @@ done
 # Build a Docker image with OpenIPC development enviroment
 docker build -t themactep-dev .
 
-mkdir workspace
+[ ! -d workspace/downloads ] && mkdir -p workspace/downloads
 
 # Clone firmware source files from repository
 case "$1" in

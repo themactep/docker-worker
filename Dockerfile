@@ -15,5 +15,7 @@ RUN useradd -rm -d /home/me -s /bin/bash -g root -G sudo -u 1000 me --no-log-ini
 RUN echo 'me:me' | chpasswd
 
 USER me
+
+ENV BR2_DL_DIR=/home/me/workspace/downloads
 WORKDIR /home/me
 
