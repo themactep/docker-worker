@@ -75,13 +75,15 @@ docker build -t themactep-dev .
 case "$1" in
 	thingino)
 		if [ ! -d workspace/thingino ]; then
-            git clone https://github.com/themactep/thingino-firmware.git \
+            git clone --recurse-submodules \
+                https://github.com/themactep/thingino-firmware.git \
                 workspace/thingino
         fi
 		;;
 	openipc)
 		if [ ! -d workspace/openipc ]; then
-            git clone https://github.com/OpenIPC/firmware.git \
+            git clone --recurse-submodules \
+                https://github.com/OpenIPC/firmware.git \
                 workspace/openipc
         fi
 		;;
