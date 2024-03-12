@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM debian:latest
+FROM debian:testing
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get update && \
  DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y --no-install-recommends \
