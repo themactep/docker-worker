@@ -5,7 +5,7 @@ FROM debian:testing
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get update && \
  DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y --no-install-recommends \
  apt-utils apt-transport-https bc build-essential ca-certificates ccache cpio curl file \
- gcc-mipsel-linux-gnu git golang-go libncurses-dev locales lzop mc rsync ssh sudo \
+ gawk gcc-mipsel-linux-gnu git golang-go libncurses-dev locales lzop mc rsync ssh sudo \
  u-boot-tools unzip vim wget whiptail
 
 RUN update-ca-certificates
