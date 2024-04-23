@@ -2,11 +2,13 @@
 
 FROM debian:testing
 
+# --no-install-recommends
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get update && \
- DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y --no-install-recommends \
- apt-utils apt-transport-https bc build-essential ca-certificates ccache cpio curl file \
- gawk gcc-mipsel-linux-gnu git golang-go libncurses-dev locales lzop mc rsync ssh sudo \
- u-boot-tools unzip vim wget whiptail
+    DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y \
+    apt-utils apt-transport-https bc build-essential ca-certificates \
+    ccache cpio curl dialog file gawk gcc-mipsel-linux-gnu git golang-go \
+    libncurses-dev locales lzop mc rsync ssh sudo u-boot-tools unzip \
+    vim wget whiptail
 
 RUN update-ca-certificates
 
