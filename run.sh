@@ -6,6 +6,7 @@
 #
 # Changes:
 #  2024-02-18: add support for thingino
+DOCKER=docker
 
 install_docker() {
 	echo "Installing Docker from its offical repository."
@@ -38,15 +39,23 @@ install_docker() {
 }
 
 need_docker=0
+# Check for docker/podman
+
 if command -v docker >/dev/null; then
 	docker_ver=$(docker -v | awk -F '[ ,.]' '{print $3}')
 	if [ "$docker_ver" -lt 20 ]; then
 		echo "Installed Docker is outdated."
 		need_docker=1
 	fi
+	DOCKER=docker
 else
 	echo "Docker not found."
 	need_docker=2
+	if command -v podman > /dev/null; then
+		echo "podman found"
+		DOCKER=podman
+		need_docker=0
+	fi
 fi
 
 while [ "$need_docker" -gt 0 ]; do
@@ -67,7 +76,7 @@ done
 
 
 # Build a Docker image with OpenIPC development enviroment
-docker build -t themactep-dev .
+${DOCKER} build -t themactep-dev .
 
 [ ! -d workspace/downloads ] && mkdir -p workspace/downloads
 
@@ -94,7 +103,7 @@ case "$1" in
 esac
 
 # Run a container in interactive mode and mount the source files in it
-docker run --rm -it \
+${DOCKER} run --rm -it \
     --mount type=bind,source="$(pwd)/workspace",target=/home/me \
     themactep-dev:latest
 
