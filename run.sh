@@ -6,7 +6,9 @@
 #
 # Changes:
 #  2024-02-18: add support for thingino
-DOCKER=docker
+#  2024-05-27: add podman support
+
+DOCKER=
 
 install_docker() {
 	echo "Installing Docker from its offical repository."
@@ -25,6 +27,7 @@ install_docker() {
 	# add Docker official repository
 	local distro=$(lsb_release -si | tr 'A-Z' 'a-z')
 	local codename=$(lsb_release -sc)
+	[ "$codename" = "trixie" ] && codename="bookworm"
 	echo "deb [arch=amd64 signed-by=${gpg_key}] https://download.docker.com/linux/$distro $codename stable" | \
 		sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
@@ -38,24 +41,23 @@ install_docker() {
 	echo "Done"
 }
 
+# Check for podman/docker
 need_docker=0
-# Check for docker/podman
+if command -v podman >/dev/null; then
+	echo "Found Podman"
+	DOCKER=podman
+elif command -v docker >/dev/null; then
+	echo "Found Docker"
+	DOCKER=docker
 
-if command -v docker >/dev/null; then
 	docker_ver=$(docker -v | awk -F '[ ,.]' '{print $3}')
 	if [ "$docker_ver" -lt 20 ]; then
 		echo "Installed Docker is outdated."
 		need_docker=1
 	fi
-	DOCKER=docker
 else
-	echo "Docker not found."
+	echo "No Podman or Docker was found."
 	need_docker=2
-	if command -v podman > /dev/null; then
-		echo "podman found"
-		DOCKER=podman
-		need_docker=0
-	fi
 fi
 
 while [ "$need_docker" -gt 0 ]; do
@@ -75,8 +77,8 @@ while [ "$need_docker" -gt 0 ]; do
 done
 
 
-# Build a Docker image with OpenIPC development enviroment
-${DOCKER} build -t themactep-dev .
+# Build a Docker image with selected development environment
+$DOCKER build -t themactep-dev .
 
 [ ! -d workspace/downloads ] && mkdir -p workspace/downloads
 
@@ -84,17 +86,13 @@ ${DOCKER} build -t themactep-dev .
 case "$1" in
 	thingino)
 		if [ ! -d workspace/thingino ]; then
-            git clone --recurse-submodules \
-                https://github.com/themactep/thingino-firmware.git \
-                workspace/thingino
-        fi
+			git clone --recurse-submodules https://github.com/themactep/thingino-firmware.git workspace/thingino
+		fi
 		;;
 	openipc)
 		if [ ! -d workspace/openipc ]; then
-            git clone --recurse-submodules \
-                https://github.com/OpenIPC/firmware.git \
-                workspace/openipc
-        fi
+			git clone --recurse-submodules https://github.com/OpenIPC/firmware.git workspace/openipc
+		fi
 		;;
 	*)
 		echo "Please select a firmware to work with."
@@ -103,8 +101,6 @@ case "$1" in
 esac
 
 # Run a container in interactive mode and mount the source files in it
-${DOCKER} run --rm -it \
-    --mount type=bind,source="$(pwd)/workspace",target=/home/me \
-    themactep-dev:latest
+$DOCKER run --rm -it --mount type=bind,source="$(pwd)/workspace",target=/home/me themactep-dev:latest
 
 exit 0
