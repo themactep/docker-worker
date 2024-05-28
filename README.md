@@ -1,7 +1,7 @@
 Dockerized Development Environment for Thingino and OpenIPC
 -----------------------------------------------------------
 
-Docker image for developing [Thingino][1] and [OpenIPC][2] firmware
+Podman/Docker image for developing [Thingino][1] and [OpenIPC][2] firmware
 in a standardized and reproducible environment across different machines.
 
 ```
