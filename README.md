@@ -1,14 +1,15 @@
-Dockerized Development Environment for Thingino and OpenIPC
------------------------------------------------------------
+Dockerized Development Environment for Thingino firmware
+--------------------------------------------------------
 
-Podman/Docker image for developing [Thingino][1] and [OpenIPC][2] firmware
-in a standardized and reproducible environment across different machines.
+Podman/Docker container for developing [Thingino firmware][1]
+in a standardized and reproducible environment.
 
 ```
 git clone https://github.com/themactep/docker-worker.git ~/docker-worker
 cd ~/docker-worker
-./run.sh thingino
+./run.sh
 ```
 
+When inside the container, run `make` to start building the firmware.
+
 [1]: https://github.com/themactep/thingino-firmware
-[2]: https://github.com/openipc/firmware

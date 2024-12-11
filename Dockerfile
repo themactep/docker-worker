@@ -19,6 +19,6 @@ RUN echo 'me:me' | chpasswd
 
 USER me
 
-ENV BR2_DL_DIR=/home/me/workspace/downloads
-WORKDIR /home/me
+ENV BR2_DL_DIR=/home/me/downloads
+WORKDIR /home/me/thingino
 

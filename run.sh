@@ -1,12 +1,13 @@
 #!/bin/bash
 #
-# Dockerized building environment for use with thingino and openipc
+# Dockerized building environment for use with Thingino firmware
 #
 # 2022, Paul Philippov <paul@themactep.com>
 #
 # Changes:
 #  2024-02-18: add support for thingino
 #  2024-05-27: add podman support
+#  2024-12-11: drop supports for openipc
 
 DOCKER=
 
@@ -36,9 +37,11 @@ install_docker() {
 
 	# install official version of Docker
 	sudo apt-get --assume-yes install docker-ce docker-ce-cli containerd.io
+	sudo usermod -a -G docker $USER
 
 	need_docker=0
 	echo "Done"
+	echo "You might need to re-login to pick up the new docker group rights."
 }
 
 # Check for podman/docker
@@ -66,6 +69,7 @@ while [ "$need_docker" -gt 0 ]; do
 	case $yn in
 		[yY]*)
 			install_docker
+			DOCKER=docker
 			;;
 		[nN]*)
 			echo "Aborted."
@@ -78,29 +82,15 @@ done
 
 
 # Build a Docker image with selected development environment
-$DOCKER build -t themactep-dev .
+$DOCKER build -t thingino-dev .
 
-[ ! -d workspace/downloads ] && mkdir -p workspace/downloads
+[ -d workspace/downloads ] || mkdir -p workspace/downloads
 
-# Clone firmware source files from repository
-case "$1" in
-	thingino)
-		if [ ! -d workspace/thingino ]; then
-			git clone --recurse-submodules https://github.com/themactep/thingino-firmware.git workspace/thingino
-		fi
-		;;
-	openipc)
-		if [ ! -d workspace/openipc ]; then
-			git clone --recurse-submodules https://github.com/OpenIPC/firmware.git workspace/openipc
-		fi
-		;;
-	*)
-		echo "Please select a firmware to work with."
-		echo "$0 [thingino|openipc]"
-		exit 1
-esac
+[ -d workspace/thingino ] || git clone --recurse-submodules \
+	https://github.com/themactep/thingino-firmware.git \
+	workspace/thingino
 
 # Run a container in interactive mode and mount the source files in it
-$DOCKER run --rm -it --mount type=bind,source="$(pwd)/workspace",target=/home/me themactep-dev:latest
+$DOCKER run --rm -it --mount type=bind,source="$(pwd)/workspace",target=/home/me thingino-dev:latest
 
 exit 0
