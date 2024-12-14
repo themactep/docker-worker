@@ -84,13 +84,16 @@ done
 # Build a Docker image with selected development environment
 $DOCKER build -t thingino-dev .
 
-[ -d workspace/downloads ] || mkdir -p workspace/downloads
-
 [ -d workspace/thingino ] || git clone --recurse-submodules \
 	https://github.com/themactep/thingino-firmware.git \
 	workspace/thingino
 
+[ -z "$BR2_DL_DIR" ] && BR2_DL_DIR=$(pwd)/workspace/downloads
+
 # Run a container in interactive mode and mount the source files in it
-$DOCKER run --rm -it --mount type=bind,source="$(pwd)/workspace",target=/home/me thingino-dev:latest
+$DOCKER run --rm -it \
+	--mount type=bind,source="$(pwd)/workspace",target=/home/me \
+	--mount type=bind,source="$BR2_DL_DIR",target=/home/me/downloads \
+	thingino-dev:latest
 
 exit 0
