@@ -3,11 +3,6 @@
 # Dockerized building environment for use with Thingino firmware
 #
 # 2022, Paul Philippov <paul@themactep.com>
-#
-# Changes:
-#  2024-02-18: add support for thingino
-#  2024-05-27: add podman support
-#  2024-12-11: drop supports for openipc
 
 DOCKER=
 
