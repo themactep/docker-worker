@@ -83,7 +83,9 @@ $DOCKER build -t thingino-dev .
 	https://github.com/themactep/thingino-firmware.git \
 	workspace/thingino
 
-[ -z "$BR2_DL_DIR" ] && BR2_DL_DIR=$(pwd)/workspace/downloads
+[ -z "$BR2_DL_DIR" ] && BR2_DL_DIR="$(pwd)/workspace/downloads"
+
+[ -d "$BR2_DL_DIR" ] || mkdir -p "$BR2_DL_DIR"
 
 # Run a container in interactive mode and mount the source files in it
 $DOCKER run --rm -it \
