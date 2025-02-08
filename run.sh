@@ -88,9 +88,9 @@ $DOCKER build -t thingino-dev .
 [ -d "$BR2_DL_DIR" ] || mkdir -p "$BR2_DL_DIR"
 
 # Run a container in interactive mode and mount the source files in it
-$DOCKER run --rm -it \
-	--mount type=bind,source="$(pwd)/workspace",target=/home/me \
-	--mount type=bind,source="$BR2_DL_DIR",target=/home/me/downloads \
+$DOCKER run --rm -it --userns=keep-id \
+	-v $(pwd)/workspace:/home/me \
+	-v $BR2_DL_DIR:/home/me/downloads \
 	thingino-dev:latest
 
 exit 0
