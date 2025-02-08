@@ -23,3 +23,4 @@ ENV BR2_DL_DIR=/home/me/downloads
 
 WORKDIR /home/me/thingino
 
+RUN git config --global --add safe.directory /home/me/thingino
